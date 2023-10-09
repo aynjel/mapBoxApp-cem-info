@@ -30,9 +30,13 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/styles.scss",
+              "mapbox-gl/dist/mapbox-gl.css"
             ],
-            "scripts": []
+            "scripts": [
+              "mapbox-gl/dist/mapbox-gl.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -93,9 +97,13 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/styles.scss",
+              "mapbox-gl/dist/mapbox-gl.css"
             ],
-            "scripts": []
+            "scripts": [
+              "mapbox-gl/dist/mapbox-gl.js"
+            ]
           }
         }
       }

@@ -1,0 +1,21 @@
+<!--map searchbox-->
+<form class="form-searchbox">
+  <div class="form-group">
+    <input type="text" class="form-control" id="search" placeholder="Search">
+  </div>
+  <button type="submit" class="btn btn-primary">
+    <mat-icon>search</mat-icon>
+  </button>
+</form>
+
+<!--Search result-->
+<div class="search-result">
+  <ul class="result-items" *ngIf="searchResult">
+    <li class="result-item" *ngFor="let item of searchResult" routerLink="/map/lat={{item.lat}}&lng={{item.lng}}">
+      <a class="result-item-content">
+        <mat-icon class="result-item-icon">place</mat-icon>
+        <h3 class="result-item-name">{{item.name}}</h3>
+      </a>
+    </li>
+  </ul>
+</div>
