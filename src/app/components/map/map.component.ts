@@ -58,16 +58,10 @@ export class MapComponent {
     });
 
     // Add map controls
-    this.map.addControl(new mapboxgl.FullscreenControl());
-    this.map.addControl(new mapboxgl.NavigationControl({
-      showCompass: true,
-      showZoom: true,
-      visualizePitch: true
-    }));
     this.map.addControl(new mapboxgl.ScaleControl({
       maxWidth: 80,
       unit: 'metric'
-    }));
+    }), 'top-right');
 
     this.map.addControl(new mapboxgl.GeolocateControl({
       positionOptions: {
@@ -81,6 +75,13 @@ export class MapComponent {
       showUserLocation: true,
       showUserHeading: true
     }));
+
+    this.map.addControl(new mapboxgl.NavigationControl({
+      showCompass: true,
+      showZoom: true,
+      visualizePitch: true
+    }));
+
 
     this.map.on('load', ()=> { });
     

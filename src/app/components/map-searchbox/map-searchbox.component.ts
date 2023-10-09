@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/app/environments/environment';
+import { MapService } from 'src/app/services/map/map.service';
+import { FormControl, FormBuilder, Validator } from '@angular/forms';
+import { MapSearchForm } from './map-search.form';
 
 @Component({
   selector: 'app-map-searchbox',
@@ -7,35 +10,44 @@ import { environment } from 'src/app/environments/environment';
   styleUrls: ['./map-searchbox.component.scss']
 })
 export class MapSearchboxComponent implements OnInit {
-  searchResult = [
-    {
-      name: 'Toledo City',
-      lat: 10.3794,
-      lng: 123.6418
-    },
-    {
-      name: 'Cebu City',
-      lat: 10.3157,
-      lng: 123.8854
-    },
-    {
-      name: 'Mandaue City',
-      lat: 10.3237,
-      lng: 123.9227
-    },
-    {
-      name: 'Lapu-Lapu City',
-      lat: 10.3103,
-      lng: 123.9493
-    },
-    {
-      name: 'Talisay City',
-      lat: 10.2448,
-      lng: 123.8494
-    }
-  ];
+  searchResults: any[] = [];
+  searchForm = new MapSearchForm(this.fb).getForm();
+  clearSearch: boolean = false;
 
-  constructor() { }
+  constructor(
+    private mapService: MapService,
+    private fb: FormBuilder
+  ) {
+    this.searchForm.valueChanges.subscribe({
+      next: (value) => {
+        if(value.search.length > 1){
+          this.mapService.getSearchboxResults(value.search)
+          .subscribe({
+            next: (response) => {
+              console.log(response.suggestions);
+              this.searchResults = response.suggestions;
+              this.clearSearch = true;
+            },
+            error: (error) => {
+              console.log(error);
+            }
+          });
+        }else{
+          this.searchResults = [];
+        }
+      }
+    });
+  }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {  }
+
+  onSubmit() {
+    this.searchResults = [];
+  }
+
+  clearSearchResults() {
+    this.searchResults = [];
+    this.searchForm.reset();
+    this.clearSearch = false;
+  }
 }

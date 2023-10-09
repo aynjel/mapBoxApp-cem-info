@@ -1,21 +1,43 @@
 <!--map searchbox-->
-<form class="form-searchbox">
+<form class="form-searchbox" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
   <div class="form-group">
-    <input type="text" class="form-control" id="search" placeholder="Search">
+    <input type="text" class="form-control" id="search" placeholder="Search" formControlName="search" autofocus>
   </div>
-  <button type="submit" class="btn btn-primary">
+  <button type="submit" class="btn btn-primary" [disabled]="!searchForm.valid" *ngIf="!clearSearch">
     <mat-icon>search</mat-icon>
+  </button>
+  <button type="button" class="btn btn-primary" *ngIf="clearSearch" (click)="clearSearchResults()">
+    <mat-icon>close</mat-icon>
   </button>
 </form>
 
 <!--Search result-->
 <div class="search-result">
-  <ul class="result-items" *ngIf="searchResult">
-    <li class="result-item" *ngFor="let item of searchResult" routerLink="/map/lat={{item.lat}}&lng={{item.lng}}">
-      <a class="result-item-content">
-        <mat-icon class="result-item-icon">place</mat-icon>
-        <h3 class="result-item-name">{{item.name}}</h3>
-      </a>
+  <ul class="result-items" *ngIf="searchResults.length > 0">
+    <li class="result-item" *ngFor="let item of searchResults" routerLink="/map/{{item.lng}}/{{item.lat}}/12">
+      <mat-icon class="result-item-icon" *ngIf="item.feature_type === 'place'">place</mat-icon>
+      <mat-icon class="result-item-icon" *ngIf="item.feature_type === 'brand'">local_offer</mat-icon>
+      <mat-icon class="result-item-icon" *ngIf="item.feature_type === 'poi'">local_offer</mat-icon>
+      <mat-icon class="result-item-icon" *ngIf="item.feature_type === 'region'">location_city</mat-icon>
+      <mat-icon class="result-item-icon" *ngIf="item.feature_type === 'postcode'">local_post_office</mat-icon>
+      <mat-icon class="result-item-icon" *ngIf="item.feature_type === 'category'">category</mat-icon>
+      <mat-icon class="result-item-icon" *ngIf="item.feature_type === 'address'">location_on</mat-icon>
+      <mat-icon class="result-item-icon" *ngIf="item.feature_type === 'intersection'">compare_arrows</mat-icon>
+      <mat-icon class="result-item-icon" *ngIf="item.feature_type === 'locality'">location_city</mat-icon>
+      <mat-icon class="result-item-icon" *ngIf="item.feature_type === 'country'">public</mat-icon>
+      <ul class="result-item-content">
+        <li>
+          <span class="result-item-name">
+          {{item.name}}
+          </span>
+          <span class="result-item-address">
+            {{item.address}}
+          </span>
+          <span class="result-item-place_formatted">
+            {{item.place_formatted}}
+          </span>
+        </li>
+      </ul>
     </li>
   </ul>
 </div>
